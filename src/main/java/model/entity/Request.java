@@ -12,6 +12,8 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Request {
     private Long id;
     private Long userId;
