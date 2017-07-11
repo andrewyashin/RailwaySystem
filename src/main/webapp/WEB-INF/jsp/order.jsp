@@ -27,13 +27,13 @@
             <a class="navbar-brand">Railway System</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="/RailwaySystem?command=main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>
+            <li class="active"><a href="/main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
-            <li><a href="/RailwaySystem?command=EN">EN</a></li>
-            <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
-            <li><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>
+            <li><a href="/EN">EN</a></li>
+            <li><a href="/UKR">UKR</a></li>
+            <li><a href="/logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>
         </ul>
     </div>
 </nav>
@@ -44,7 +44,7 @@
         <h1><fmt:message key="message.noTickets" bundle="${message}"/></h1>
     </c:if>
     <c:if test="${not empty tickets}">
-        <form action="/RailwaySystem/make" method="post" class="text-center">
+        <form action="/book" method="post" class="text-center">
             <table class="table">
                 <tr>
                     <th><fmt:message key="order.trainNumber" bundle="${order}"/></th>

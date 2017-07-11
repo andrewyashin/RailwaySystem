@@ -1,4 +1,4 @@
-package command.user;
+package web.controller.user;
 
 class CommandUserUtil {
     static final String USER_ATTRIBUTE = "user";

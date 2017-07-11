@@ -1,4 +1,4 @@
-package command.admin;
+package web.controller.admin;
 
 class CommandAdminUtil {
      static final String TICKETS_ATTRIBUTE = "tickets";

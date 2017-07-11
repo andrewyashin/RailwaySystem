@@ -1,4 +1,4 @@
-package controller.filters;
+package web.filters;
 
 import javax.servlet.*;
 import java.io.IOException;

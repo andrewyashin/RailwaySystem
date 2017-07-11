@@ -1,4 +1,4 @@
-package command.localization;
+package web.controller.localization;
 
 import java.util.Locale;
 

@@ -30,15 +30,15 @@
             <a class="navbar-brand">Railway System</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/RailwaySystem?command=EN">EN</a></li>
-            <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
+            <li><a href="/EN">EN</a></li>
+            <li><a href="/UKR">UKR</a></li>
         </ul>
     </div>
 </nav>
 <div class="row">
     <div class="col-md-5"></div>
     <div class="col-md-2" style="text-align: center;">
-        <form style="padding-top: 100%; text-align: center" method="post" action="/RailwaySystem/route"
+        <form style="padding-top: 100%; text-align: center" method="post" action="/route"
               class="center-block">
             <input type="text" placeholder="<fmt:message key="login.placeholderEmail" bundle="${login}"/>" name="email"
                    id="email"

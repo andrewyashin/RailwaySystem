@@ -27,25 +27,25 @@
             <a class="navbar-brand">Railway System</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="/RailwaySystem?command=users"><fmt:message key="navbar.users" bundle="${navbar}"/></a></li>
-            <li><a href="/RailwaySystem?command=tickets"><fmt:message key="navbar.tickets"
-                                                                                     bundle="${navbar}"/></a>
+            <li><a href="/users"><fmt:message key="navbar.users" bundle="${navbar}"/></a></li>
+            <li class="active"><a href="/tickets"><fmt:message key="navbar.tickets"
+                                                               bundle="${navbar}"/></a>
             </li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
             <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
-            <li><a href="/RailwaySystem?command=EN">EN</a></li>
-            <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
-            <li class="right"><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout"
-                                                                                   bundle="${navbar}"/></a></li>
+            <li><a href="/EN">EN</a></li>
+            <li><a href="/UKR">UKR</a></li>
+            <li class="right"><a href="/logout"><fmt:message key="navbar.logout"
+                                                             bundle="${navbar}"/></a></li>
         </ul>
     </div>
 </nav>
 <div class="col-md-2"></div>
 <div class="col-md-8">
 
-    <form method="post" action="/RailwaySystem/admin">
+    <form method="post" action="/admin">
         <table class="table">
             <tr>
                 <th><fmt:message key="usersPage.email" bundle="${usersPage}"/></th>

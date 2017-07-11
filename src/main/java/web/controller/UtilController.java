@@ -1,6 +1,8 @@
-package command;
+package web.controller;
 
 import model.entity.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import service.AdminService;
 import service.LoginService;
 import service.RouteService;
@@ -14,14 +16,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static command.CommandUtil.*;
+import static web.controller.CommandUtil.*;
 
-public class LoginCommand implements Command {
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
 
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@Controller
+public class UtilController {
+
+    @RequestMapping("/route")
+    public String login(HttpServletRequest request) {
         String page = null;
         String email = request.getParameter(EMAIL).trim();
         String password = request.getParameter(PASSWORD).trim();
@@ -35,6 +37,52 @@ public class LoginCommand implements Command {
         }
         return page;
     }
+
+    @RequestMapping("/login")
+    public String register(HttpServletRequest request) {
+        String page = null;
+        String email = request.getParameter(EMAIL).trim();
+        String password = request.getParameter(PASSWORD).trim();
+        String name = request.getParameter(NAME).trim();
+        String surname = request.getParameter(SURNAME).trim();
+        String phone = request.getParameter(PHONE).trim();
+
+
+        if(LoginService.getInstance().isPresentLogin(email) == null){
+            User user = new User.Builder()
+                    .setEmail(email)
+                    .setPassword(password)
+                    .setName(name)
+                    .setPhone(phone)
+                    .setSurname(surname)
+                    .isAdmin(false)
+                    .build();
+
+            user = LoginService.getInstance().addUser(user);
+            page = Configuration.getInstance().getConfig(Configuration.LOGIN);
+        } else {
+            request.setAttribute("errorMessage", true);
+            page = Configuration.getInstance().getConfig(Configuration.REGISTER);
+        }
+
+        return page;
+    }
+
+    @RequestMapping("/")
+    public String startPage() {
+        return Configuration.getInstance().getConfig(Configuration.LOGIN);
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        String page = Configuration.getInstance().getConfig(Configuration.LOGIN);
+        HttpSession session = request.getSession(false);
+        if(session.getAttribute("user") != null){
+            session.setAttribute("user", null);
+        }
+        return page;
+    }
+
 
     private String checkIfCorrectPassword(User user, HttpServletRequest request, String inputPassword){
         String page = null;

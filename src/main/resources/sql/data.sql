@@ -10,19 +10,19 @@ INSERT INTO station(name) VALUE ('Kharkiv');
 INSERT INTO station(name) VALUE ('Lviv');
 INSERT INTO station(name) VALUE ('Odessa');
 
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 12:45:00', '2017-07-01 23:00:00',1, 1,2,300);
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 14:30:00', '2017-07-01 22:00:00',1, 2,1,300);
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 23:45:00', '2017-07-02 05:00:00',2, 1,4,500);
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 11:12:00', '2017-07-01 17:00:00',2, 4,1,500);
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 06:12:00', '2017-07-01 14:00:00',3, 2,3,800);
-INSERT INTO route(from_time, to_time, price_id, from_id, to_id, distance) VALUE ('2017-07-01 05:12:00', '2017-07-01 16:00:00',2, 3,2,800);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 12:45:00', '2017-07-01 23:00:00',1, 1,2,300);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 14:30:00', '2017-07-01 22:00:00',1, 2,1,300);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 23:45:00', '2017-07-02 05:00:00',2, 1,4,500);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 11:12:00', '2017-07-01 17:00:00',2, 4,1,500);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 06:12:00', '2017-07-01 14:00:00',3, 2,3,800);
+INSERT INTO route(fromTime, toTime, priceId, fromId, toId, distance) VALUE ('2017-07-01 05:12:00', '2017-07-01 16:00:00',2, 3,2,800);
 
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (1,49,50,50);
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (2,60,70,20);
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (3,100,100,100);
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (4,100,100,100);
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (5,50,50,50);
-INSERT INTO train(route_id, compartment_free, deluxe_free, berth_free) VALUE (6,30,20,50);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (1,49,50,50);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (2,60,70,20);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (3,100,100,100);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (4,100,100,100);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (5,50,50,50);
+INSERT INTO train(routeId, compartmentFree, deluxeFree, berthFree) VALUE (6,30,20,50);
 
-INSERT INTO request(user_id, train_id, type, price) VALUE (2,1,'C',60);
+INSERT INTO request(userId, trainId, type, price) VALUE (2,1,'C',60);
 

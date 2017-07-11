@@ -23,12 +23,12 @@
             <a class="navbar-brand">Railway System</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="/RailwaySystem?command=tickets">Main</a></li>
+            <li><a href="/RailwaySystem?web.command=tickets">Main</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/RailwaySystem?command=EN">EN</a></li>
-            <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
-            <li class="right"><a href="/RailwaySystem?command=logout">Log out</a></li>
+            <li><a href="/RailwaySystem?web.command=EN">EN</a></li>
+            <li><a href="/RailwaySystem?web.command=UKR">UKR</a></li>
+            <li class="right"><a href="/RailwaySystem?web.command=logout">Log out</a></li>
         </ul>
     </div>
 </nav>

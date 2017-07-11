@@ -5,11 +5,15 @@ import dao.PriceDAO;
 import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryDAOUtil;
 import model.entity.Price;
+import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
 import java.util.logging.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 class MySQLPriceDAO implements PriceDAO{
     private static final Logger LOG = Logger.getLogger(MySQLPriceDAO.class.getName());

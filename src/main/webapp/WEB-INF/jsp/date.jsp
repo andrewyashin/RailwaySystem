@@ -27,19 +27,19 @@
             <a class="navbar-brand">Railway System</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="/RailwaySystem?command=main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>        
+            <li class="active"><a href="/main"><fmt:message key="navbar.main" bundle="${navbar}"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="navbar-brand"><hello:user name="${username}"/></a></li>
-            <li><a href="/RailwaySystem?command=EN">EN</a></li>
-            <li><a href="/RailwaySystem?command=UKR">UKR</a></li>
-            <li><a href="/RailwaySystem?command=logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>
+            <li><a href="/EN">EN</a></li>
+            <li><a href="/UKR">UKR</a></li>
+            <li><a href="/logout"><fmt:message key="navbar.logout" bundle="${navbar}"/></a></li>
         </ul>
     </div>
 </nav>
 <div class="col-md-2"></div>
 <div class="col-md-8">
-    <form action="/RailwaySystem/route" method="post" class="form-horizontal">
+    <form action="/date" method="post" class="form-horizontal">
         <div class="form-group">
             <div class="col-md-6">
                 <select name="from" class="form-control pull-right" id="from">

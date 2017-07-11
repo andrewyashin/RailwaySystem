@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-5"></div>
     <div class="col-md-2" style="text-align: center;">
-        <form style="padding-top: 100%; text-align: center" method="post" action="RailwaySystem/login" class="center-block">
+        <form style="padding-top: 100%; text-align: center" method="post" action="/login" class="center-block">
             <input type="email" placeholder="<fmt:message key="login.emailRegister" bundle="${login}"/>" name="email"
                    required
                    class="form-control"
