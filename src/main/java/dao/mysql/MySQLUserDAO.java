@@ -1,10 +1,14 @@
 package dao.mysql;
 
-import dao.ConnectionPool;
 import dao.UserDAO;
 import dao.mysql.util.LogMessageDAOUtil;
 import dao.mysql.util.QueryDAOUtil;
 import model.entity.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.logging.Logger;
 
 import java.sql.*;
@@ -12,230 +16,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Repository
 class MySQLUserDAO implements UserDAO{
     private static final Logger LOG = Logger.getLogger(MySQLUserDAO.class.getName());
-    private static final MySQLUserDAO INSTANCE = new MySQLUserDAO();
-
     private static final String TABLE_NAME = "user";
-
     private static final String LABEL_ID = "id";
-    private static final String LABEL_EMAIL = "email";
-    private static final String LABEL_PASSWORD = "password";
-    private static final String LABEL_NAME = "name";
-    private static final String LABEL_SURNAME = "surname";
-    private static final String LABEL_PHONE = "phone";
-    private static final String LABEL_ADMIN = "admin";
 
-    private MySQLUserDAO(){}
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    static MySQLUserDAO getInstance(){
-        return INSTANCE;
-    }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findAll() {
-        List<User> result = new ArrayList<>();
-        Connection connection = null;
-        Statement statement = null;
+        List<User> result = entityManager
+                .createNamedQuery("User.findAll", User.class)
+                .getResultList();
 
-        try {
-            String findAllQuery = QueryDAOUtil.createFindAllQuery(TABLE_NAME);
-
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.createStatement();
-
-            ResultSet set = statement.executeQuery(findAllQuery);
-
-            while (set.next()) {
-                result.add(getUser(set));
-            }
-
-            LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorFindAll(TABLE_NAME));
-        } finally {
-            close(connection, statement);
-        }
-
+        LOG.info(LogMessageDAOUtil.createInfoFindAll(TABLE_NAME));
         return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(Long id) {
-        List<User> result = findByParameter(LABEL_ID, id);
-        if(result.size() != 1)
-            return null;
+        User result = entityManager
+                .createNamedQuery("User.findById", User.class)
+                .setParameter("id", id)
+                .getSingleResult();
 
-        return result.get(0);
+        return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findByEmail(String email) {
-        List<User> result = findByParameter(LABEL_EMAIL, email);
-        if(result.size() != 1)
-            return null;
+        User result = entityManager
+                .createNamedQuery("User.findByEmail", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
 
-        return result.get(0);
+        return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User create(User user) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try{
-            String createQuery = QueryDAOUtil.createInsertQuery(
-                    TABLE_NAME,
-                    LABEL_EMAIL,
-                    LABEL_PASSWORD,
-                    LABEL_NAME,
-                    LABEL_SURNAME,
-                    LABEL_PHONE,
-                    LABEL_ADMIN
-            );
-
-            connection = ConnectionPool.getInstance().getConnection();
-
-            statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getName());
-            statement.setString(4, user.getSurname());
-            statement.setString(5, user.getPhone());
-            statement.setBoolean(6, user.getAdmin());
-
-            statement.executeUpdate();
-
-            ResultSet set = statement.getGeneratedKeys();
-            if(set.next()){
-                user.setId(set.getLong(1));
-            }
-
-            LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, user.getId()));
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
-        } finally {
-            close(connection, statement);
-        }
-
+        entityManager.persist(user);
+        LOG.info(LogMessageDAOUtil.createInfoCreate(TABLE_NAME, user.getId()));
         return user;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User update(User user) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-
-        try{
-            String createQuery = QueryDAOUtil.createUpdateQuery(
-                    TABLE_NAME,
-                    LABEL_ID,
-                    LABEL_EMAIL,
-                    LABEL_PASSWORD,
-                    LABEL_NAME,
-                    LABEL_SURNAME,
-                    LABEL_PHONE,
-                    LABEL_ADMIN
-            );
-
-            connection = ConnectionPool.getInstance().getConnection();
-
-            statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getName());
-            statement.setString(4, user.getSurname());
-            statement.setString(5, user.getPhone());
-            statement.setBoolean(6, user.getAdmin());
-
-            statement.setLong(7, user.getId());
-
-            statement.executeUpdate();
-
-            ResultSet set = statement.getGeneratedKeys();
-            if(set.next()){
-                user.setId(set.getLong(1));
-            }
-
-            LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, user.getId()));
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, user.getId()));
-        } finally {
-            close(connection, statement);
-        }
-
+        entityManager.merge(user);
+        LOG.info(LogMessageDAOUtil.createInfoUpdate(TABLE_NAME, user.getId()));
         return user;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void delete(User user) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try{
-            String createQuery = QueryDAOUtil.createDeleteQuery(TABLE_NAME, LABEL_ID);
-
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(createQuery);
-
-            statement.setLong(1, user.getId());
-            statement.executeUpdate();
-
-            LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, user.getId()));
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorCreate(TABLE_NAME));
-        } finally {
-            close(connection, statement);
-        }
-    }
-
-    private List<User> findByParameter(String label, Object parameter){
-        List<User> result = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try{
-            String findByIdQuery = QueryDAOUtil.createFindByParameterQuery(TABLE_NAME, label);
-
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(findByIdQuery);
-            statement.setObject(1, parameter);
-            ResultSet set = statement.executeQuery();
-            while (set.next()){
-                result.add(getUser(set));
-            }
-
-            LOG.info(LogMessageDAOUtil.createInfoFindByParameter(TABLE_NAME, label, parameter));
-        } catch (SQLException e){
-            LOG.severe(LogMessageDAOUtil.createErrorFindByParameter(TABLE_NAME, label, parameter));
-        } finally {
-            close(connection, statement);
-        }
-
-        return result;
-    }
-
-    private void close(Connection connection, Statement statement){
-        try {
-            if (connection != null) connection.close();
-            if (statement!= null) statement.close();
-        } catch (SQLException e) {
-            LOG.severe(LogMessageDAOUtil.createErrorClose());
-        }
-    }
-
-    private User getUser(ResultSet set) throws SQLException{
-        User result = new User();
-        result.setId(set.getLong(LABEL_ID));
-        result.setEmail(set.getString(LABEL_EMAIL));
-        result.setPassword(set.getString(LABEL_PASSWORD));
-
-        result.setName(set.getString(LABEL_NAME));
-        result.setSurname(set.getString(LABEL_SURNAME));
-        result.setPhone(set.getString(LABEL_PHONE));
-
-        result.setAdmin(set.getBoolean(LABEL_ADMIN));
-        return result;
+        entityManager.merge(user);
+        entityManager.remove(user);
+        LOG.info(LogMessageDAOUtil.createInfoDelete(TABLE_NAME, user.getId()));
     }
 }

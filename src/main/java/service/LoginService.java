@@ -1,7 +1,5 @@
 package service;
 
-import dao.AbstractDAOFactory;
-import dao.DAOFactory;
 import dao.DataBase;
 import model.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;

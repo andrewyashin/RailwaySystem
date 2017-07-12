@@ -19,7 +19,8 @@ import java.util.Set;
 @Table(name = "user")
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "select distinct u from User u"),
-        @NamedQuery(name = "User.findById", query = "select distinct u from User u where u.id = :id")
+        @NamedQuery(name = "User.findById", query = "select distinct u from User u where u.id = :id"),
+        @NamedQuery(name = "User.findByEmail", query = "select distinct u from User u where u.email = :email")
 })
 public class User {
     private Long id;

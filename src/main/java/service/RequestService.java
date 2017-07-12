@@ -1,7 +1,5 @@
 package service;
 
-import dao.AbstractDAOFactory;
-import dao.DAOFactory;
 import dao.DataBase;
 import dao.RequestDAO;
 import dao.mysql.TypePlace;
@@ -13,7 +11,6 @@ import model.entity.Route;
 import model.entity.Train;
 import model.entity.User;
 import org.springframework.stereotype.Service;
-import service.util.LogMessageServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -140,17 +137,17 @@ public class RequestService {
         List<Request> requests = factory.createRequestDAO().findAll();
         List<Ticket> result = new ArrayList<>();
         for(Request request: requests){
-            Train train = factory.createTrainDAO().findById(request.getTrainId());
-            Route route = factory.createRouteDAO().findById(train.getRouteId());
-            User user = factory.createUserDAO().findById(request.getUserId());
+            Train train = factory.createTrainDAO().findById(request.getTrain().getId());
+            Route route = factory.createRouteDAO().findById(train.getRoute().getId());
+            User user = factory.createUserDAO().findById(request.getUser().getId());
 
             Ticket ticket = new Ticket();
             ticket.setTrainId(train.getId());
             ticket.setRequestId(request.getId());
-            ticket.setUserId(request.getUserId());
+            ticket.setUserId(request.getUser().getId());
 
-            ticket.setFromCity(factory.createStationDAO().findById(route.getFromId()).getName());
-            ticket.setToCity(factory.createStationDAO().findById(route.getToId()).getName());
+            ticket.setFromCity(factory.createStationDAO().findById(route.getFromStation().getId()).getName());
+            ticket.setToCity(factory.createStationDAO().findById(route.getToStation().getId()).getName());
 
             ticket.setFromDate(TrainService.getInstance().formatDate(route.getFromTime()));
             ticket.setToDate(TrainService.getInstance().formatDate(route.getToTime()));

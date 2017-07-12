@@ -19,8 +19,12 @@ import java.util.Set;
 @Entity
 @Table(name = "route")
 @NamedQueries({
-        @NamedQuery(name = "Route.findAll", query = "select r from Route r"),
-        @NamedQuery(name = "Route.findById", query = "select r from Route r where r.id = :id")
+        @NamedQuery(name = "Route.findAll",
+                query = "select r from Route r"),
+        @NamedQuery(name = "Route.findById",
+                query = "select r from Route r where r.id = :id"),
+        @NamedQuery(name = "Route.findByFromId",
+                query = "select r from Route r where r.fromStation.id = :fromId")
 })
 public class Route {
     private Long id;

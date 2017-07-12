@@ -18,8 +18,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "train")
 @NamedQueries({
-        @NamedQuery(name = "Train.findAll", query = "select t from Train t"),
-        @NamedQuery(name = "Train.findById", query = "select distinct t from Train t where t.id = :id")
+        @NamedQuery(name = "Train.findAll",
+                query = "select t from Train t"),
+        @NamedQuery(name = "Train.findById",
+                query = "select distinct t from Train t where t.id = :id")
+        @NamedQuery(name = "Train.findByRouteId",
+                query = "select distinct t from Train t where t.route.id = :routeId")
 })
 public class Train {
     private Long id;
