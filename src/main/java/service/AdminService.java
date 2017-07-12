@@ -5,11 +5,14 @@ import dao.DAOFactory;
 import dao.DataBase;
 import model.entity.User;
 import java.util.logging.Logger;
+
+import org.springframework.stereotype.Service;
 import service.util.LogMessageServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AdminService {
     private static final Logger LOG = Logger.getLogger(AdminService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;

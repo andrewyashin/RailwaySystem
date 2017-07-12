@@ -7,12 +7,15 @@ import model.entity.Price;
 import model.entity.Route;
 import model.entity.Station;
 import model.entity.Train;
+import org.springframework.stereotype.Service;
+
 import java.util.logging.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Service
 public class RouteService {
     private static final Logger LOG = Logger.getLogger(RouteService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;

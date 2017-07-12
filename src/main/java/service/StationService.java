@@ -5,8 +5,11 @@ import dao.DAOFactory;
 import dao.DataBase;
 import model.entity.Route;
 import model.entity.Station;
+import org.springframework.stereotype.Service;
+
 import java.util.logging.Logger;
 
+@Service
 public class StationService {
     private static final Logger LOG = Logger.getLogger(StationService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;

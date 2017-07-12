@@ -9,6 +9,4 @@ class CommandAdminUtil {
      static final String DELETE = "delete";
      static final String ADMIN = "admin";
      static final String USER = "user";
-
-
 }

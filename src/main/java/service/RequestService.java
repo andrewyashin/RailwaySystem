@@ -12,6 +12,7 @@ import model.entity.Request;
 import model.entity.Route;
 import model.entity.Train;
 import model.entity.User;
+import org.springframework.stereotype.Service;
 import service.util.LogMessageServiceUtil;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
-
+@Service
 public class RequestService {
     private static final Logger LOG = Logger.getLogger(RequestDAO.class.getName());
     private static final DataBase DB = DataBase.MYSQL;

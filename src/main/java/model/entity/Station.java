@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Entity to table <b>STATION</b>
  *
@@ -13,7 +17,34 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "station")
+@NamedQueries({
+        @NamedQuery(name = "Station.findAll",
+                query = "select s from Station s"),
+        @NamedQuery(name = "Station.findById",
+                query = "select distinct  s from Station s where s.id = :id")
+})
 public class Station {
     private Long id;
     private String name;
+
+    private Set<Route> routes = new HashSet<>();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long getId() {
+        return id;
+    }
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Route> getRoutes() {
+        return routes;
+    }
 }

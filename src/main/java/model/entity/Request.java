@@ -3,6 +3,8 @@ package model.entity;
 import dao.mysql.TypePlace;
 import lombok.*;
 
+import javax.persistence.*;
+
 /**
  * Entity to table <b>REQUEST</b>
  *
@@ -12,47 +14,47 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Entity
+@Table(name = "request")
+@NamedQueries({
+        @NamedQuery(name = "Request.findAll", query = "select r from Request r"),
+        @NamedQuery(name = "Request.findById", query = "select r from Request r where r.id = :id")
+})
 public class Request {
     private Long id;
-    private Long userId;
-    private Long trainId;
-
     private TypePlace type;
-
     private Double price;
 
+    private User user;
+    private Train train;
 
-    public static class RequestBuilder{
-        private Request request;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public Long getId() {
+        return id;
+    }
 
-        public RequestBuilder(){
-            request = new Request();
-        }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    public TypePlace getType() {
+        return type;
+    }
 
-        public RequestBuilder setUserId(Long id){
-            request.setUserId(id);
-            return this;
-        }
+    @Column(name = "price")
+    public Double getPrice() {
+        return price;
+    }
 
-        public RequestBuilder setTrainId(Long id){
-            request.setTrainId(id);
-            return this;
-        }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
 
-        public RequestBuilder setPrice(Double price){
-            request.setPrice(price);
-            return this;
-        }
-
-        public RequestBuilder setType(TypePlace type){
-            request.setType(type);
-            return this;
-        }
-
-        public Request build(){
-            return request;
-        }
+    @ManyToOne
+    @JoinColumn(name = "train_id")
+    public Train getTrain() {
+        return train;
     }
 }

@@ -7,6 +7,8 @@ import dto.TrainRoute;
 import model.entity.Route;
 import model.entity.Station;
 import model.entity.Train;
+import org.springframework.stereotype.Service;
+
 import java.util.logging.Logger;
 
 import java.text.ParseException;
@@ -16,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class TrainService {
     private static final Logger LOG = Logger.getLogger(TrainService.class.getName());
     private static final DataBase DB = DataBase.MYSQL;
