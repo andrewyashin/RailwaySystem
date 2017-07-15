@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Entity to table <b>TRAIN</b>
@@ -21,11 +22,11 @@ import javax.persistence.*;
         @NamedQuery(name = "Train.findAll",
                 query = "select t from Train t"),
         @NamedQuery(name = "Train.findById",
-                query = "select distinct t from Train t where t.id = :id")
+                query = "select distinct t from Train t where t.id = :id"),
         @NamedQuery(name = "Train.findByRouteId",
                 query = "select distinct t from Train t where t.route.id = :routeId")
 })
-public class Train {
+public class Train implements Serializable{
     private Long id;
 
     private Long compartmentFree;

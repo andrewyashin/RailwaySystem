@@ -1,6 +1,7 @@
 package web.controller;
 
 import model.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import service.AdminService;
@@ -8,11 +9,8 @@ import service.LoginService;
 import service.RouteService;
 import util.Configuration;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,13 +20,22 @@ import static web.controller.CommandUtil.*;
 @Controller
 public class UtilController {
 
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private RouteService routeService;
+
     @RequestMapping("/route")
     public String login(HttpServletRequest request) {
         String page = null;
         String email = request.getParameter(EMAIL).trim();
         String password = request.getParameter(PASSWORD).trim();
 
-        User user = LoginService.getInstance().isPresentLogin(email);
+        User user = loginService.isPresentLogin(email);
 
         if(user == null){
             page = redirectToErrorPage(request);
@@ -48,17 +55,16 @@ public class UtilController {
         String phone = request.getParameter(PHONE).trim();
 
 
-        if(LoginService.getInstance().isPresentLogin(email) == null){
-            User user = new User.Builder()
-                    .setEmail(email)
-                    .setPassword(password)
-                    .setName(name)
-                    .setPhone(phone)
-                    .setSurname(surname)
-                    .isAdmin(false)
-                    .build();
+        if(loginService.isPresentLogin(email) == null){
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setName(name);
+            user.setPhone(phone);
+            user.setSurname(surname);
+            user.setAdmin(false);
 
-            user = LoginService.getInstance().addUser(user);
+            user = loginService.addUser(user);
             page = Configuration.getInstance().getConfig(Configuration.LOGIN);
         } else {
             request.setAttribute("errorMessage", true);
@@ -86,7 +92,7 @@ public class UtilController {
 
     private String checkIfCorrectPassword(User user, HttpServletRequest request, String inputPassword){
         String page = null;
-        if (LoginService.getInstance().checkPassword(user, inputPassword)) {
+        if (loginService.checkPassword(user, inputPassword)) {
             page = checkIfAdmin(user, request);
         } else {
             page = redirectToErrorPage(request);
@@ -97,7 +103,7 @@ public class UtilController {
 
     private String checkIfAdmin(User user, HttpServletRequest request){
         String page = null;
-        if(user.isAdmin()){
+        if(user.getAdmin()){
             page = redirectToAdminPage(request, user);
         } else {
             page = redirectToUserPage(request, user);
@@ -109,7 +115,7 @@ public class UtilController {
         HttpSession session = request.getSession(false);
         session.setAttribute(USER_ATTRIBUTE, user);
 
-        request.setAttribute(USERS_ATTRIBUTE, AdminService.getInstance().getAllUsers());
+        request.setAttribute(USERS_ATTRIBUTE, adminService.getAllUsers());
         request.setAttribute(USERNAME_ATTRIBUTE, user.getName());
         return Configuration.getInstance().getConfig(Configuration.ADMIN);
     }
@@ -118,8 +124,8 @@ public class UtilController {
         HttpSession session = request.getSession(false);
         session.setAttribute(USER_ATTRIBUTE, user);
 
-        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, routeService.findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, routeService.findAvailableToStations());
         request.setAttribute(TRAINS_ATTRIBUTE, null);
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);

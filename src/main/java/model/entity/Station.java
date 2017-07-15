@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,11 +26,12 @@ import java.util.Set;
         @NamedQuery(name = "Station.findById",
                 query = "select distinct  s from Station s where s.id = :id")
 })
-public class Station {
+public class Station implements Serializable{
     private Long id;
     private String name;
 
-    private Set<Route> routes = new HashSet<>();
+    private Set<Route> fromRoutes = new HashSet<>();
+    private Set<Route> toRoutes = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +45,15 @@ public class Station {
         return name;
     }
 
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
-    public Set<Route> getRoutes() {
-        return routes;
+    @OneToMany
+    @JoinColumn(name = "fromId")
+    public Set<Route> getFromRoutes() {
+        return fromRoutes;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "toId")
+    public Set<Route> getToRoutes() {
+        return toRoutes;
     }
 }

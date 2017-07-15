@@ -10,7 +10,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:config/*
+            classpath:config/app-config.xml
+            classpath:config/db-config.xml
         </param-value>
     </context-param>
 

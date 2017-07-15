@@ -7,6 +7,9 @@
     <context:annotation-config/>
     <context:component-scan base-package="web"/>
 
+    <import resource="db-config.xml"/>
+    <import resource="app-config.xml"/>
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>

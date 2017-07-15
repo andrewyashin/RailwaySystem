@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import java.util.Set;
         @NamedQuery(name = "Price.findAll", query = "select p from Price p"),
         @NamedQuery(name = "Price.findById", query = "select p from Price p where p.id = :id")
 })
-public class Price {
+public class Price implements Serializable{
     private Long id;
     private Double compartmentFactor;
     private Double deluxeFactor;
@@ -57,8 +58,9 @@ public class Price {
         return berthFactor;
     }
 
-    @OneToMany(mappedBy = "price", cascade = CascadeType.ALL, orphanRemoval = true)
-    public Set<Route> getRoute() {
+    @OneToMany
+    @JoinColumn(name = "priceId")
+    public Set<Route> getRoutes() {
         return routes;
     }
 }

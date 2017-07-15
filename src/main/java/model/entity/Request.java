@@ -4,6 +4,7 @@ import dao.mysql.TypePlace;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Entity to table <b>REQUEST</b>
@@ -20,7 +21,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Request.findAll", query = "select r from Request r"),
         @NamedQuery(name = "Request.findById", query = "select r from Request r where r.id = :id")
 })
-public class Request {
+public class Request implements Serializable{
     private Long id;
     private TypePlace type;
     private Double price;
@@ -47,13 +48,13 @@ public class Request {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     public User getUser() {
         return user;
     }
 
     @ManyToOne
-    @JoinColumn(name = "train_id")
+    @JoinColumn(name = "trainId")
     public Train getTrain() {
         return train;
     }

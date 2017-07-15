@@ -3,6 +3,7 @@ package model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ import java.util.Set;
         @NamedQuery(name = "User.findById", query = "select distinct u from User u where u.id = :id"),
         @NamedQuery(name = "User.findByEmail", query = "select distinct u from User u where u.email = :email")
 })
-public class User {
+public class User implements Serializable{
     private Long id;
     private String name;
     private String surname;
@@ -75,5 +76,12 @@ public class User {
         return admin;
     }
 
+    public void makeAdmin(){
+        admin = true;
+    }
+
+    public void makeUser(){
+        admin = false;
+    }
 
 }

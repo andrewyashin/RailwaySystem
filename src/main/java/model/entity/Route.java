@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Set;
         @NamedQuery(name = "Route.findByFromId",
                 query = "select r from Route r where r.fromStation.id = :fromId")
 })
-public class Route {
+public class Route implements Serializable{
     private Long id;
     private String fromTime;
     private String toTime;

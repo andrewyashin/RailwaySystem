@@ -4,6 +4,7 @@ import dto.Ticket;
 import dto.TrainRoute;
 import exception.InvalidDataBaseOperation;
 import model.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,10 +13,7 @@ import service.RouteService;
 import service.TrainService;
 import util.Configuration;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,11 +21,18 @@ import java.util.Date;
 import java.util.List;
 
 import static web.controller.user.CommandUserUtil.*;
-import static web.controller.user.CommandUserUtil.TIME_PARAMETER;
-import static web.controller.user.CommandUserUtil.USERNAME_ATTRIBUTE;
 
 @Controller
 public class UserController {
+
+    @Autowired
+    private RouteService routeService;
+
+    @Autowired
+    private RequestService requestService;
+
+    @Autowired
+    private TrainService trainService;
 
     @RequestMapping("/date")
     public String date(@RequestParam(name = "command") String param,  HttpServletRequest request){
@@ -49,8 +54,8 @@ public class UserController {
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
-        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, routeService.findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, routeService.findAvailableToStations());
         request.setAttribute(TRAINS_ATTRIBUTE, null);
         request.setAttribute(USERNAME_ATTRIBUTE, userNow.getName());
         request.setAttribute(DATE_NOW_ATTRIBUTE, format.format(new Date()));
@@ -67,8 +72,8 @@ public class UserController {
 
         List<Ticket> tickets = (List<Ticket>) request.getSession(false).getAttribute(TICKETS_ATTRIBUTE);
         if(tickets == null){
-            request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
-            request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+            request.setAttribute(CITIES_FROM_ATTRIBUTE, routeService.findAvailableFromStations());
+            request.setAttribute(CITIES_TO_ATTRIBUTE, routeService.findAvailableToStations());
             request.setAttribute(TRAINS_ATTRIBUTE, null);
 
             SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
@@ -79,11 +84,11 @@ public class UserController {
 
             for (Ticket ticket : tickets) {
                 Integer count = Integer.parseInt(request.getParameter(ticket.getTrainId().toString()));
-                resultTickets.addAll(RequestService.getInstance().addTickets(ticket, count));
+                resultTickets.addAll(requestService.addTickets(ticket, count));
             }
 
             try {
-                RequestService.getInstance().reserveTickets(resultTickets);
+                requestService.reserveTickets(resultTickets);
                 request.setAttribute(TICKETS_ATTRIBUTE, resultTickets);
             } catch (InvalidDataBaseOperation e){
                 request.setAttribute(MESSAGE_ERROR_ATTRIBUTE, e.getMessage());
@@ -115,10 +120,10 @@ public class UserController {
             e.printStackTrace();
         }
 
-        List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
+        List<TrainRoute> trains = trainService.findTrainsAndRoutes(from_id, to_id, date);
 
-        request.setAttribute(CITIES_FROM_ATTRIBUTE, RouteService.getInstance().findAvailableFromStations());
-        request.setAttribute(CITIES_TO_ATTRIBUTE, RouteService.getInstance().findAvailableToStations());
+        request.setAttribute(CITIES_FROM_ATTRIBUTE, routeService.findAvailableFromStations());
+        request.setAttribute(CITIES_TO_ATTRIBUTE, routeService.findAvailableToStations());
 
         request.setAttribute(FROM_PARAMETER, from_id);
         request.setAttribute(TO_PARAMETER, to_id);
@@ -154,12 +159,12 @@ public class UserController {
         }
 
         User user = (User) request.getSession().getAttribute(USER_ATTRIBUTE);
-        List<TrainRoute> trains = TrainService.getInstance().findTrainsAndRoutes(from_id, to_id, date);
+        List<TrainRoute> trains = trainService.findTrainsAndRoutes(from_id, to_id, date);
         List<Ticket> tickets = new ArrayList<>();
         for (TrainRoute trainRoute : trains) {
             String parameter = request.getParameter(TRAIN_PARAMETER + trainRoute.getTrainId());
 
-            Ticket ticket = RequestService.getInstance().makeTicket(parameter, user, trainRoute);
+            Ticket ticket = requestService.makeTicket(parameter, user, trainRoute);
             if (ticket != null){
                 tickets.add(ticket);
             }
