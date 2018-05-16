@@ -63,4 +63,8 @@ public class LoginService {
         user.setPassword(securePassword);
         return user;
     }
+
+    public void setFactory(DAOFactory factory) {
+        this.factory = factory;
+    }
 }
